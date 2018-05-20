@@ -6,5 +6,6 @@ output_files/
 simulation/
 v68k.qpf
 v68k.qsf
+v68k.qws
 v68k_description.txt
 v68k_nativelink_simulation.rpt
