@@ -1,1 +1,10 @@
 *.bak
+c5_pin_model_dump.txt
+db/
+incremental_db/
+output_files/
+simulation/
+v68k.qpf
+v68k.qsf
+v68k_description.txt
+v68k_nativelink_simulation.rpt
