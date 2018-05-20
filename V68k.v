@@ -3,12 +3,12 @@ module V68k (
   input HALT,
   input CLK,
   // address bus
-  output [31:1] A,
+  output [23:1] A,
   output UDS,
   output LDS,
   output AS,  // asserted when address on bus is valid
   // data bus
-  inout [31:0] D,
+  inout [15:0] D,
   input DTACK,  // asserted when data on bus is valid
   output RW,  // low to write, high to read
   // synchronous peripherals
