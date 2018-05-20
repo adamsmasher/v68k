@@ -2,7 +2,6 @@ module Alu_test(output TEST);
 
 parameter bits = 16;
 
-reg clk;
 reg [bits-1:0] a;
 reg [bits-1:0] b;
 wire [bits-1:0] o;
@@ -13,13 +12,7 @@ wire n;
 
 assign TEST = 1;
 
-Alu #(bits) alu(clk, a, b, o, c, z, v, n);
-
-always begin
-  clk <= 0; #5
-  clk <= 1; #5
-  ;
-end
+Alu #(bits) alu(a, b, o, c, z, v, n);
 
 initial begin
   // zero

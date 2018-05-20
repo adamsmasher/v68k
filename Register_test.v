@@ -1,6 +1,5 @@
 module Register_test (output TEST);
 
-reg clk;
 reg en_a;
 reg en_b;
 reg s;
@@ -10,12 +9,7 @@ wire [3:0] q_b;
 
 assign TEST = 1;
 
-always begin
-  clk = 0; #5
-  clk = 1; #5;
-end
-
-Register #(4) register(clk, en_a, en_b, s, d, q_a, q_b);
+Register #(4) register(en_a, en_b, s, d, q_a, q_b);
 
 initial begin
   // if the register is not enabled, it should float

@@ -2,8 +2,6 @@ module DataRegisterFile_test (output TEST);
 
 assign TEST = 1;
 
-reg clk;
-
 reg [2:0] reg_sel_a;
 reg [2:0] reg_sel_b;
 reg s;
@@ -11,12 +9,7 @@ reg [31:0] d;
 wire [31:0] q_a;
 wire [31:0] q_b;
 
-DataRegisterFile ds(clk, reg_sel_a, reg_sel_b, s, d, q_a, q_b);
-
-always begin
-  clk = 0; #5
-  clk = 1; #5;
-end
+DataRegisterFile ds(reg_sel_a, reg_sel_b, s, d, q_a, q_b);
 
 initial begin
   // we can set via line B
