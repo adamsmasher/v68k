@@ -62,14 +62,14 @@ always @(posedge CLK) begin
   //  pc <= pc + 1;
     case (state)
       INITIALIZE_0: begin
-        dreg_sel_b <= 0;
         dreg_set <= 1;
+        dreg_sel_b <= 0;
         dreg_data <= 1;
         state <= INITIALIZE_1;
       end
       INITIALIZE_1: begin
-        dreg_sel_b <= 1;
         dreg_set <= 1;
+        dreg_sel_b <= 1;
         dreg_data <= 1;
         state <= GET_LO_OPS;
       end
@@ -79,19 +79,16 @@ always @(posedge CLK) begin
         dreg_sel_b <= 1;
         alu_a <= data_out_a[15:0];
         alu_b <= data_out_b[15:0];
-        dreg_data[15:0] <= alu_out;
         state <= GET_HI_OPS;
       end
       GET_HI_OPS: begin
-        dreg_set <= 0;
-        dreg_sel_a <= 0;
-        dreg_sel_b <= 1;
+        dreg_data[15:0] <= alu_out;
         alu_a <= data_out_a[31:16];
         alu_b <= data_out_b[31:16];
-        dreg_data[31:16] <= alu_out;
         state <= WRITE_BACK;
       end
       WRITE_BACK: begin
+        dreg_data[31:16] <= alu_out;
         dreg_sel_b <= 0;
         dreg_set <= 1;
         state <= GET_LO_OPS;
