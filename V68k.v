@@ -29,7 +29,7 @@ module V68k (
 reg [15:0] alu_a;
 reg [15:0] alu_b;
 wire [15:0] alu_out;
-Alu alu(alu_a, alu_b, alu_out);
+Alu alu(CLK, alu_a, alu_b, alu_out);
 
 //StatusRegister status_register(CLK);
 
@@ -39,7 +39,7 @@ reg dreg_set;
 wire [31:0] data_out_a;
 wire [31:0] data_out_b;
 reg [31:0] dreg_data;
-DataRegisterFile data_regs(dreg_sel_a, dreg_sel_b, dreg_set, dreg_data, data_out_a, data_out_b);
+DataRegisterFile data_regs(CLK, dreg_sel_a, dreg_sel_b, dreg_set, dreg_data, data_out_a, data_out_b);
 
 //AddressRegisterFile address_regs(CLK);
 

@@ -1,4 +1,5 @@
 module DataRegisterFile  #(parameter reg_width=32) (
+  input CLK,
   input [2:0] REG_SEL_A,
   input [2:0] REG_SEL_B,
   input S,
@@ -16,7 +17,7 @@ Decoder #(3) reg_sel_b(REG_SEL_B, en_b);
 genvar i;
 generate
   for(i = 0; i < 8; i = i + 1) begin : generate_registers
-    Register #(reg_width) d(en_a[i], en_b[i], S, D, Q_A, Q_B);
+    Register #(reg_width) d(CLK, en_a[i], en_b[i], S, D, Q_A, Q_B);
   end
 endgenerate
 

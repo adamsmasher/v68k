@@ -1,4 +1,5 @@
 module Register #(parameter bits=32) (
+  input CLK,
   input EN_A,
   input EN_B,
   input S,
@@ -9,7 +10,7 @@ module Register #(parameter bits=32) (
 
 reg [bits-1:0] contents;
 
-always @(*) begin
+always @(posedge CLK) begin
   if (EN_B && S) begin
     contents <= D;
   end
