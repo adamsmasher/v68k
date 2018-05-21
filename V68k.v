@@ -26,11 +26,6 @@ module V68k (
   output [2:0] FC
 );
 
-reg [15:0] alu_a;
-reg [15:0] alu_b;
-wire [15:0] alu_out;
-Alu alu(CLK, alu_a, alu_b, alu_out);
-
 //StatusRegister status_register(CLK);
 
 reg [2:0] dreg_sel_a;
@@ -41,15 +36,28 @@ wire [31:0] data_out_b;
 reg [31:0] dreg_data;
 DataRegisterFile data_regs(CLK, dreg_sel_a, dreg_sel_b, dreg_set, dreg_data, data_out_a, data_out_b);
 
+reg [15:0] d_out;
+assign D = d_out;
+
+reg alu_sel_a;
+wire [15:0] alu_in_a;
+Mux2 alu_mux_a(alu_sel_a, data_out_a[15:0], data_out_a[31:16], alu_in_a);
+reg alu_sel_b;
+wire [15:0] alu_in_b;
+Mux2 alu_mux_b(alu_sel_b, data_out_b[15:0], data_out_b[31:16], alu_in_b);
+wire [15:0] alu_out;
+Alu alu(CLK, alu_in_a, alu_in_b, alu_out);
+
 //AddressRegisterFile address_regs(CLK);
 
 //reg [31:0] pc;
 
 parameter INITIALIZE_0 = 0;
 parameter INITIALIZE_1 = 1;
-parameter GET_LO_OPS = 2;
-parameter GET_HI_OPS = 3;
+parameter GET_OPS = 2;
+parameter DO_HI_ADD = 3;
 parameter WRITE_BACK = 4;
+parameter WRITE_MEM = 5;
   
 reg [2:0] state;
 
@@ -71,27 +79,32 @@ always @(posedge CLK) begin
         dreg_set <= 1;
         dreg_sel_b <= 1;
         dreg_data <= 1;
-        state <= GET_LO_OPS;
+        state <= GET_OPS;
       end
-      GET_LO_OPS: begin
+      GET_OPS: begin
         dreg_set <= 0;
         dreg_sel_a <= 0;
         dreg_sel_b <= 1;
-        alu_a <= data_out_a[15:0];
-        alu_b <= data_out_b[15:0];
-        state <= GET_HI_OPS;
+        alu_sel_a <= 0;
+        alu_sel_b <= 0;
+        state <= DO_HI_ADD;
       end
-      GET_HI_OPS: begin
+      DO_HI_ADD: begin
         dreg_data[15:0] <= alu_out;
-        alu_a <= data_out_a[31:16];
-        alu_b <= data_out_b[31:16];
+        alu_sel_a <= 1;
+        alu_sel_b <= 1;
         state <= WRITE_BACK;
       end
       WRITE_BACK: begin
         dreg_data[31:16] <= alu_out;
         dreg_sel_b <= 0;
         dreg_set <= 1;
-        state <= GET_LO_OPS;
+        state <= WRITE_MEM;
+      end
+      WRITE_MEM: begin
+        dreg_set <= 0;
+        d_out <= dreg_data[15:0];
+        state <= GET_OPS;
       end
     endcase
   end    
