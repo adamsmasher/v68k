@@ -9,6 +9,7 @@ module Alu #(parameter bits=16) (
   output N
 );
 
+// one extra bit for carry
 reg [bits:0] result;
 
 always @(posedge CLK) begin
