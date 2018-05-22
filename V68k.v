@@ -52,6 +52,8 @@ parameter AS_OFF = 1'b1;
 parameter RW_WRITE = 1'b0;
 parameter RW_READ = 1'b1;
 
+reg [15:0] ir;
+
 // set to indicate where we want the ALU's inputs to come from
 reg alu_sel_a;
 reg alu_sel_b;
@@ -71,26 +73,46 @@ parameter ALU_HI = 1'b1;
 
 //AddressRegisterFile address_regs(CLK);
 
-//reg [31:0] pc;
+reg [31:0] pc;
 
-parameter INITIALIZE_0 = 0;
+/* parameter INITIALIZE_0 = 0;
 parameter INITIALIZE_1 = 1;
 parameter GET_OPS = 2;
 parameter DO_HI_ADD = 3;
 parameter WRITE_BACK = 4;
-parameter WRITE_MEM = 5;
-  
+parameter WRITE_MEM = 5; */
+
+parameter FETCH = 3'b000;
+parameter WAIT_FOR_INSTRUCTION = 3'b001;
+
 reg [2:0] state;
 
 always @(posedge CLK) begin
   if(RESET) begin
     dreg_set <= 0;
- //   pc <= 0;
-    state <= INITIALIZE_0;
+    // TODO: read the initial PC from memory
+    pc <= 0;
+    state <= FETCH;
   end else begin
-  //  pc <= pc + 1;
     case (state)
-      INITIALIZE_0: begin
+      FETCH: begin
+        A <= pc[23:1];
+        // read both the upper and lower byte
+        UDS <= DS_ON;
+        LDS <= DS_ON;
+        AS <= AS_STROBE;
+        RW <= RW_READ;
+        state <= WAIT_FOR_INSTRUCTION;
+      end
+      WAIT_FOR_INSTRUCTION: begin
+        if (DTACK) begin
+          ir <= D;
+          AS <= AS_OFF;
+          UDS <= DS_OFF;
+          LDS <= DS_OFF;
+        end
+      end
+/*      INITIALIZE_0: begin
         dreg_set <= 1;
         dreg_sel_b <= 0;
         dreg_data <= 1;
@@ -126,7 +148,7 @@ always @(posedge CLK) begin
         dreg_set <= 0;
         d_out <= dreg_data[15:0];
         state <= GET_OPS;
-      end
+      end */
     endcase
   end    
 end
