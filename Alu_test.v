@@ -5,6 +5,7 @@ parameter bits = 16;
 reg [bits-1:0] a;
 reg [bits-1:0] b;
 wire [bits-1:0] o;
+reg x = 0;
 wire c;
 wire z;
 wire v;
@@ -12,7 +13,7 @@ wire n;
 
 assign TEST = 1;
 
-Alu #(bits) alu(a, b, o, c, z, v, n);
+Alu #(bits) alu(a, b, o, x, c, z, v, n);
 
 initial begin
   // zero

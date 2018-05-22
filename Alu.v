@@ -2,6 +2,7 @@ module Alu #(parameter bits=16) (
   input [bits-1:0] A,
   input [bits-1:0] B,
   output [bits-1:0] O,
+  input X,
   output C,
   output Z,
   output V,
@@ -12,7 +13,7 @@ module Alu #(parameter bits=16) (
 reg [bits:0] result;
 
 always @(*) begin
-  result <= A + B;
+  result <= A + B + X;
 end
 
 assign O = result[bits-1:0];
