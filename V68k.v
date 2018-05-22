@@ -43,14 +43,17 @@ DataRegisterFile data_regs(CLK, dreg_sel_a, dreg_sel_b, dreg_set, dreg_data, dat
 reg [15:0] d_out;
 assign D = d_out;
 
-parameter DS_ON = 1'b0;
-parameter DS_OFF = 1'b1;
+parameter
+  DS_ON  = 1'b0,
+  DS_OFF = 1'b1;
 
-parameter AS_STROBE = 1'b0;
-parameter AS_OFF = 1'b1;
+parameter
+  AS_STROBE = 1'b0,
+  AS_OFF    = 1'b1;
 
-parameter RW_WRITE = 1'b0;
-parameter RW_READ = 1'b1;
+parameter
+  RW_WRITE = 1'b0,
+  RW_READ = 1'b1;
 
 reg [15:0] ir;
 
@@ -68,8 +71,9 @@ wire [15:0] alu_out;
 Alu alu(alu_in_a, alu_in_b, alu_out);
 
 // indicate whether we want the input to the ALU to come from the hi word or the lo word
-parameter ALU_LO = 1'b0;
-parameter ALU_HI = 1'b1;
+parameter
+  ALU_LO = 1'b0,
+  ALU_HI = 1'b1;
 
 //AddressRegisterFile address_regs(CLK);
 
@@ -82,8 +86,9 @@ parameter DO_HI_ADD = 3;
 parameter WRITE_BACK = 4;
 parameter WRITE_MEM = 5; */
 
-parameter FETCH = 3'b000;
-parameter WAIT_FOR_INSTRUCTION = 3'b001;
+parameter
+  FETCH                = 3'b000,
+  WAIT_FOR_INSTRUCTION = 3'b001;
 
 reg [2:0] state;
 
