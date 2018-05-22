@@ -43,6 +43,15 @@ DataRegisterFile data_regs(CLK, dreg_sel_a, dreg_sel_b, dreg_set, dreg_data, dat
 reg [15:0] d_out;
 assign D = d_out;
 
+parameter DS_ON = 1'b0;
+parameter DS_OFF = 1'b1;
+
+parameter AS_STROBE = 1'b0;
+parameter AS_OFF = 1'b1;
+
+parameter RW_WRITE = 1'b0;
+parameter RW_READ = 1'b1;
+
 reg alu_sel_a;
 wire [15:0] alu_in_a;
 Mux2 alu_mux_a(alu_sel_a, data_out_a[15:0], data_out_a[31:16], alu_in_a);
@@ -51,6 +60,10 @@ wire [15:0] alu_in_b;
 Mux2 alu_mux_b(alu_sel_b, data_out_b[15:0], data_out_b[31:16], alu_in_b);
 wire [15:0] alu_out;
 Alu alu(alu_in_a, alu_in_b, alu_out);
+
+// indicate whether we want the input to the ALU to come from the hi word or the lo word
+parameter ALU_LO = 1'b0;
+parameter ALU_HI = 1'b1;
 
 //AddressRegisterFile address_regs(CLK);
 
