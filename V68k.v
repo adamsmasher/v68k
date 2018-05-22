@@ -28,14 +28,18 @@ module V68k (
 
 //StatusRegister status_register(CLK);
 
+// set which data registers we want data ports A and B to point to
 reg [2:0] dreg_sel_a;
 reg [2:0] dreg_sel_b;
+// set if we want to set the register on data port B to dreg_data
 reg dreg_set;
+reg [31:0] dreg_data;
+// the output of data ports A and B
 wire [31:0] data_out_a;
 wire [31:0] data_out_b;
-reg [31:0] dreg_data;
 DataRegisterFile data_regs(CLK, dreg_sel_a, dreg_sel_b, dreg_set, dreg_data, data_out_a, data_out_b);
 
+// TODO: this is an oversimplification - we should only be driving D if it's safe
 reg [15:0] d_out;
 assign D = d_out;
 
