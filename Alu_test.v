@@ -60,9 +60,9 @@ initial begin
   end
   // negative + negative, overflow
   a <= 16'hFFFF;
-  b <= 16'h1000;
+  b <= 16'h8000;
   #10 if (o !== 16'h7FFF || c !== 1 || z !== 0 || v !== 1 || n !== 0) begin
-    $display("Adding FFFF + 1000, got %H, expected 0FFF", o);
+    $display("Adding FFFF + 1000, got %H, expected 7FFF", o);
     $display("CZVN: %b %b %b %b", c, z, v, n);
     $stop;
   end
