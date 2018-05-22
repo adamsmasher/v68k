@@ -52,12 +52,16 @@ parameter AS_OFF = 1'b1;
 parameter RW_WRITE = 1'b0;
 parameter RW_READ = 1'b1;
 
+// set to indicate where we want the ALU's inputs to come from
 reg alu_sel_a;
-wire [15:0] alu_in_a;
-Mux2 alu_mux_a(alu_sel_a, data_out_a[15:0], data_out_a[31:16], alu_in_a);
 reg alu_sel_b;
+// the wires that connect the ALU's inputs to the ALU
+wire [15:0] alu_in_a;
 wire [15:0] alu_in_b;
+// Mux's to select the input for the ALU based on the alu_sel registers
+Mux2 alu_mux_a(alu_sel_a, data_out_a[15:0], data_out_a[31:16], alu_in_a);
 Mux2 alu_mux_b(alu_sel_b, data_out_b[15:0], data_out_b[31:16], alu_in_b);
+// output from the ALU
 wire [15:0] alu_out;
 Alu alu(alu_in_a, alu_in_b, alu_out);
 
