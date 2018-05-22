@@ -1,5 +1,4 @@
 module Alu #(parameter bits=16) (
-  input CLK,
   input [bits-1:0] A,
   input [bits-1:0] B,
   output [bits-1:0] O,
@@ -12,7 +11,7 @@ module Alu #(parameter bits=16) (
 // one extra bit for carry
 reg [bits:0] result;
 
-always @(posedge CLK) begin
+always @(*) begin
   result <= A + B;
 end
 

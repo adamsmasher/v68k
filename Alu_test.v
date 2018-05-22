@@ -12,14 +12,7 @@ wire n;
 
 assign TEST = 1;
 
-reg clk;
-
-always begin
-  clk = 0; #5
-  clk = 1; #5;
-end
-
-Alu #(bits) alu(clk, a, b, o, c, z, v, n);
+Alu #(bits) alu(a, b, o, c, z, v, n);
 
 initial begin
   // zero

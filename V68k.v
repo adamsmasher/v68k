@@ -46,7 +46,7 @@ reg alu_sel_b;
 wire [15:0] alu_in_b;
 Mux2 alu_mux_b(alu_sel_b, data_out_b[15:0], data_out_b[31:16], alu_in_b);
 wire [15:0] alu_out;
-Alu alu(CLK, alu_in_a, alu_in_b, alu_out);
+Alu alu(alu_in_a, alu_in_b, alu_out);
 
 //AddressRegisterFile address_regs(CLK);
 
