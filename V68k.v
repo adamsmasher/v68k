@@ -3,14 +3,14 @@ module V68k (
   input HALT,
   input CLK,
   // address bus
-  output [23:1] A,
-  output UDS,
-  output LDS,
-  output AS,  // asserted when address on bus is valid
+  output reg [23:1] A,
+  output reg UDS,  // asserted if we want to read the hi byte of a word
+  output reg LDS,  // asserted if we want to read the lo byte of a word
+  output reg AS,  // asserted when address on bus is valid
   // data bus
   inout [15:0] D,
   input DTACK,  // asserted when data on bus is valid
-  output RW,  // low to write, high to read
+  output reg RW,  // low to write, high to read
   // synchronous peripherals
   output E,  // continuous clock for peripheral sync, low for 6 CPU clocks, high for 4
   input VPA,  // set by the address decoder when address bus is pointing at a peripheral to trigger E-synced cycles; also when set, interrupt vector is chosen by D0-D7; otherwise, interrupt is chosen based on IPL0-IPL2
