@@ -20,7 +20,7 @@ initial begin
   // zero
   a <= 0; 
   b <= 0;
-  #10 if (o !== 0) begin
+  #10 if (o !== 0 || c !== 0 || z !== 1 || v !== 0 || n !== 0) begin
     $display("Adding 0 + 0, got %H, expected 0", o);
     $display("CZVN: %b %b %b %b", c, z, v, n);
     $stop;
@@ -28,7 +28,7 @@ initial begin
   // positive + positive, no overflow or carry
   a <= 16'h010F;
   b <= 16'h010F; 
-  #10 if (o !== 16'h021E) begin
+  #10 if (o !== 16'h021E || c !== 0 || z !== 0 || v !== 0 || n !== 0) begin
     $display("Adding 010F + 010F, got %H, expected 021E", o);
     $display("CZVN: %b %b %b %b", c, z, v, n);
     $stop;
@@ -36,7 +36,7 @@ initial begin
   // positive + positive, overflow no carry
   a <= 16'h7FFF;
   b <= 16'h0001;
-  #10 if (o !== 16'h8000) begin
+  #10 if (o !== 16'h8000 || c !== 0 || z !== 0 || v !== 1 || n !== 1) begin
     $display("Adding 7FFF + 0001, got %H, expected 8000", o);
     $display("CZVN: %b %b %b %b", c, z, v, n);
     $stop;
@@ -45,7 +45,7 @@ initial begin
   // (a.k.a positive + negative)
   a <= 16'hFFFF;
   b <= 16'h0001;
-  #10 if (o !== 0) begin
+  #10 if (o !== 0 || c !== 1 || z !== 1 || v !== 0 || n !== 0) begin
     $display("Adding FFFF + 0001, got %H, expected 0", o);
     $display("CZVN: %b %b %b %b", c, z, v, n);
     $stop;
@@ -53,7 +53,7 @@ initial begin
   // negative + negative, no overflow
   a <= 16'hFFFF;
   b <= 16'hFFFF;
-  #10 if (o !== 16'hFFFE) begin
+  #10 if (o !== 16'hFFFE || c !== 1 || z !== 0 || v !== 0 || n !== 1) begin
     $display("Adding FFFF + FFFF, got %H, expected FFFE", o);
     $display("CZVN: %b %b %b %b", c, z, v, n);
     $stop;
@@ -61,7 +61,7 @@ initial begin
   // negative + negative, overflow
   a <= 16'hFFFF;
   b <= 16'h1000;
-  #10 if (o !== 16'h0FFF) begin
+  #10 if (o !== 16'h7FFF || c !== 1 || z !== 0 || v !== 1 || n !== 0) begin
     $display("Adding FFFF + 1000, got %H, expected 0FFF", o);
     $display("CZVN: %b %b %b %b", c, z, v, n);
     $stop;
