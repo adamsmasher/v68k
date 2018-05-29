@@ -26,7 +26,10 @@ module V68k (
   output [2:0] FC
 );
 
-//StatusRegister status_register(CLK);
+reg n;
+reg z;
+reg v;
+reg c;
 
 // set which data registers we want data ports A and B to point to
 reg [2:0] dreg_sel_a;
