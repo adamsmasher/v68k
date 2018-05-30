@@ -109,6 +109,9 @@ always @(posedge CLK) begin
   end else begin
     case (state)
       FETCH: begin
+        // get CPU into a good state
+        dreg_set <= 0;
+        // begin fetch logic
         A <= pc[23:1];
         // read both the upper and lower byte
         UDS <= DS_ON;
