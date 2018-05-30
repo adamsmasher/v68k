@@ -60,6 +60,8 @@ parameter
 
 reg [15:0] ir;
 
+reg [31:0] tmp_reg;
+
 // set to indicate where we want the ALU's inputs to come from
 reg alu_sel_a;
 reg alu_sel_b;
@@ -92,7 +94,9 @@ parameter WRITE_MEM = 5; */
 parameter
   FETCH                = 3'b000,
   WAIT_FOR_INSTRUCTION = 3'b001,
-  DECODE               = 3'b010;
+  DECODE               = 3'b010,
+  EXG_DATA_0           = 3'b011,
+  EXG_DATA_1           = 3'b100;
 
 reg [2:0] state;
 
@@ -207,7 +211,12 @@ always @(posedge CLK) begin
           16'b1011_????_????_????:; // CMPA
           16'b1011_????_????_????:; // EOR
           16'b1100_???1_0000_????:; // ABCD
-          16'b1100_???1_????_????:; // EXG
+          16'b1100_???1_0100_0???:  // EXG (Dn to Dn)
+          begin
+            dreg_sel_a <= ir[11:9];
+            dreg_sel_b <= ir[2:0];
+            state <= EXG_DATA_0;
+          end
           16'b1100_????_????_????:; // AND
           16'b1100_???0_11??_????:; // MULU
           16'b1100_???1_11??_????:; // MULS
@@ -223,6 +232,20 @@ always @(posedge CLK) begin
           16'b1110_????_???1_0???:; // ROXL, ROXR (Register rotate)
           16'b1110_????_???1_1???:; // ROL, ROR (Register rotate)
         endcase
+      end
+      EXG_DATA_0: begin
+        // we have the two register values loaded into data_out_a and data_out_b
+        // copy b into the temporary register and a into b
+        dreg_set <= 1;
+        dreg_data <= data_out_a;
+        tmp_reg <= data_out_b;
+        state <= EXG_DATA_1;
+      end
+      EXG_DATA_1: begin
+        dreg_set <= 1;
+        dreg_sel_b <= dreg_sel_a;
+        dreg_data <= tmp_reg;
+        state <= FETCH;
       end
 /*      INITIALIZE_0: begin
         dreg_set <= 1;
